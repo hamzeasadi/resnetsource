@@ -113,21 +113,18 @@ def allpatches(srcpath, trgpath):
     for iframefolder in srciframesfolders:
         iframes = os.listdir(os.path.join(srcpath, iframefolder))
         iframes = ds_remove(iframes)
+
+        patchpath = os.path.join(trgpath, iframefolder)
+        cfg.creatdir(patchpath)
+
         for j, iframe in enumerate(iframes):
             iframepath = os.path.join(srcpath, iframefolder, iframe)
             patches = imagepatcheswithcoords(imgpath=iframepath, H=224, W=224)
-            patchpath = os.path.join(trgpath, iframefolder)
-            cfg.creatdir(patchpath)
+            
             for i, patch in enumerate(patches):
                 patchname = os.path.join(patchpath, f"img-{j}-patch-{i}.tiff")
-                print(patch)
-                # cv2.imwrite(filename=patchname, img=patch)
                 imageio.imsave(patchname, patch)
-                break
-                # cv2.imshow(patch)
-           
-            break
-        # break
+
 
 
 
@@ -137,9 +134,11 @@ def main():
 
     srcpath = os.path.join(cfg.paths['liebherrtrainiframes'])
     trgpath = os.path.join(cfg.paths['liebherrdatasettrain'])
+    allpatches(srcpath=srcpath, trgpath=trgpath)
 
     srcpath = os.path.join(cfg.paths['liebherrtestiframes'])
     trgpath = os.path.join(cfg.paths['liebherrdatasettest'])
+    allpatches(srcpath=srcpath, trgpath=trgpath)
 
 
 if __name__ == '__main__':
