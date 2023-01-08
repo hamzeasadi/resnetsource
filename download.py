@@ -6,7 +6,7 @@ import argparse
 parser = argparse.ArgumentParser(prog='download.py', description='this scripets take file id of google drive file and save it in specific location')
 parser.add_argument('--fileid', '-fi', type=str, required=True, default='None')
 parser.add_argument('--savepath', '-sp', type=str, required=True, default='./')
-parser.add_argument('--filename', '-sp', type=str, required=True, default='data.zip')
+parser.add_argument('--filename', '-fn', type=str, required=True, default='data.zip')
 
 args = parser.parse_args()
 
@@ -40,7 +40,7 @@ def save_response_content(response, destination):
                 f.write(chunk)
 
 
-                
+
 
 if __name__ == "__main__":
     # file_id = '1c84_CtRGK8ifv-7c9MI_xYVruYAnYX5p'
