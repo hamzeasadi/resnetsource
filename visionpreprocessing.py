@@ -134,24 +134,12 @@ def allpatches(srcpath, trgpath):
 
 def main():
     path = os.path.join('hello', 'world')
-    # iframes(videopath=path, trgiframespath='jk')
 
-    # srcfoldervideos = cfg.paths['visionallvideos']
-    # trgiframepath = cfg.paths['visioniframes']
-    # iframe_extraction(videosfolderpath=srcfoldervideos, trgiframefolderpath=trgiframepath)
-    imgpath = '/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherriframes/liebherrtestiframes/GantryTravel/video_16.avi-image-out0.png'
-    # imagepatcheswithcoords(imgpath=imgpath, H=224, W=224)
-    srciframes = cfg.paths['liebherrtestiframes']
-    trgpath = cfg.paths['liebherrdatasettest']
-    allpatches(srcpath=srciframes, trgpath=trgpath)
+    srcpath = os.path.join(cfg.paths['liebherrtrainiframes'])
+    trgpath = os.path.join(cfg.paths['liebherrdatasettrain'])
 
-    # img = imageio.imread('/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherrdataset/liebherrdatasettest/TruckRear/img-0-patch-0.tiff')
-    # print(img.shape)
-
-    # for i in range(3):
-    #     print(img[:, :, i])
-    #     cv2.imshow('patch', img[:, :, i])
-    #     cv2.waitKey(0)
+    srcpath = os.path.join(cfg.paths['liebherrtestiframes'])
+    trgpath = os.path.join(cfg.paths['liebherrdatasettest'])
 
 
 if __name__ == '__main__':
