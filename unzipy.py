@@ -1,4 +1,4 @@
-import zipfile                                                                                                                           │
+import zipfile
 import conf as cfg
 import os
 import argparse
