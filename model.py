@@ -4,8 +4,8 @@ from torch.nn import functional as F
 from torchinfo import summary
 from torchvision import models
 import os
-
-
+import cv2
+import numpy as np
 
 
 class ModelBase(nn.Module):
@@ -49,23 +49,25 @@ class ConstConv(ModelBase):
     """
     doc
     """
-    def __init__(self, lcnf: dict=constlayer, name='constlayer', created_time=None):
+    def __init__(self, lcnf: dict=constlayer, name='constlayer', created_time=None, num_cls=10):
         super().__init__(name=name, created_time=created_time)
         self.lcnf = lcnf
+        self.num_cls = num_cls
         self.register_parameter("const_weight", None)
         self.const_weight = nn.Parameter(torch.randn(size=[lcnf['outch'], 1, lcnf['ks'], lcnf['ks']]), requires_grad=True)
 
         resnet_weight = models.ResNet50_Weights.DEFAULT
         self.base_model = models.resnet50(weights=resnet_weight)
-        self.base_model.fc = nn.Linear(in_features=2048, out_features=10)
+        self.base_model.fc = nn.Linear(in_features=2048, out_features=num_cls)
         self.const2res = nn.Conv2d(in_channels=lcnf['outch']+2, out_channels=3, kernel_size=3, stride=1, padding='same')
 
     def add_pos(self, res, batch):
         Z = []
         for i in range(res.shape[0]):
             residual = res[i, :, :, :]
-            z = torch.cat((residual, self.coord), dim=0)
-            Z.append(z.unsqueeze_(dim=0)) 
+            coord = batch[i, 1:, :, :]
+            z = torch.cat((residual, coord), dim=0)
+            Z.append(z.unsqueeze_(dim=0))
         return torch.cat(tensors=Z, dim=0)
 
     def normalize(self):
@@ -79,18 +81,30 @@ class ConstConv(ModelBase):
     def forward(self, x):
         self.normalize()
         noise = F.conv2d(x[:, 0:1, :, :], self.const_weight, padding='same')
-        noisecoord = self.add_pos(res=noise)
-        x = self.fx(noisecoord)
-
-        # x = self.const2res(noisecoord)
-        # x = self.base_model(x)
+        noisecoord = self.add_pos(res=noise, batch=x)
+        resinput = self.const2res(noisecoord)
+        x = self.base_model(resinput)
         
-        return x 
+        return x , noise, resinput
 
 
 
 def main():
-    pass
+    x = torch.randn(size=(10, 3, 224, 224))
+    # model = ConstConv(num_cls=6)
+    # yhat, noise, noisecoord = model(x)
+    # # print(yhat)
+    # noise = noise.detach().numpy()
+    # noisecoord = noisecoord.detach().numpy()
+
+    # for noisech in noise:
+    #     cv2.imshow('noise', noisech[0])
+    #     cv2.waitKey(0)
+
+    # for noisech in noisecoord:
+    #     noisech = np.reshape(noisech, newshape=(224, 224, 3))
+    #     cv2.imshow('noisecoord', noisech)
+    #     cv2.waitKey(0)
 
 
 if __name__ == '__main__':
