@@ -20,6 +20,9 @@ paths = dict(
 
     liebherr=os.path.join(datapath, 'liebherr'),
     liebherrvideos=os.path.join(datapath, 'liebherr', 'liebherrvideos'), 
+        liebherrallvideos=os.path.join(datapath, 'liebherr', 'liebherrvideos', 'liebherrallvideos'),
+        liebherrtrainvideos=os.path.join(datapath, 'liebherr', 'liebherrvideos', 'liebherrtrainvideos'),
+        liebherrtestvideos=os.path.join(datapath, 'liebherr', 'liebherrvideos', 'liebherrtestvideos'),
     liebherrdataset=os.path.join(datapath, 'liebherr', 'liebherrdataset'), 
         liebherrdatasettrain=os.path.join(datapath, 'liebherr', 'liebherrdataset', 'liebherrdatasettrain'), 
         liebherrdatasettest=os.path.join(datapath, 'liebherr', 'liebherrdataset', 'liebherrdatasettest'),
@@ -29,6 +32,9 @@ paths = dict(
     
     vision=os.path.join(datapath, 'vision'),
     visionvideos=os.path.join(datapath, 'vision', 'visionvideos'), 
+        visionallvideos=os.path.join(datapath, 'vision', 'visionvideos', 'visionallvideos'),
+        visiontrainvideos=os.path.join(datapath, 'vision', 'visionvideos', 'visiontrainvideos'),
+        visiontestvideos=os.path.join(datapath, 'vision', 'visionvideos', 'visiontestvideos'),
     visiondataset=os.path.join(datapath, 'vision', 'visiondataset'), 
         visiondatasettrain=os.path.join(datapath, 'vision', 'visiondataset', 'visiondatasettrain'), 
         visiondatasettest=os.path.join(datapath, 'vision', 'visiondataset', 'visiondatasettest'),
@@ -53,7 +59,7 @@ def allpaths(dirs: dict):
 
 def main():
     print(root)
-    # allpaths(dirs=paths)
+    allpaths(dirs=paths)
 
 
 
