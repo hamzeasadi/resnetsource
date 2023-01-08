@@ -43,7 +43,7 @@ class ModelBase(nn.Module):
 
 
 
-constlayer = dict(outch=3, ks=5, scale=10)
+constlayer = dict(outch=3, ks=5, scale=5)
 
 class ConstConv(ModelBase):
     """
