@@ -91,10 +91,18 @@ def imagepatcheswithcoords(imgpath, H, W):
     #     cv2.imshow('gray', img[:, :, i])
     #     cv2.waitKey(0)
 
-    numh = 2*int(h/H) - 1
-    numw = 2*int(w/W) - 1
-    dh = int(H/2)
-    dw = int(W/2)
+    # train
+    # numh = 2*int(h/H) - 1
+    # numw = 2*int(w/W) - 1
+    # dh = int(H/2)
+    # dw = int(W/2)
+
+    # test
+    numh = int(h/H)
+    numw = int(w/W)
+    dh = H
+    dw = W
+
     crops = []
     for i in range(numh):
         hi = i*dh
@@ -125,20 +133,36 @@ def allpatches(srcpath, trgpath):
                 patchname = os.path.join(patchpath, f"img-{j}-patch-{i}.tiff")
                 imageio.imsave(patchname, patch)
 
-
+                break
+            break
 
 
 
 def main():
     path = os.path.join('hello', 'world')
 
-    srcpath = os.path.join(cfg.paths['liebherrtrainiframes'])
-    trgpath = os.path.join(cfg.paths['liebherrdatasettrain'])
-    allpatches(srcpath=srcpath, trgpath=trgpath)
+    # # srcpath = os.path.join(cfg.paths['liebherrtrainiframes'])
+    # # trgpath = os.path.join(cfg.paths['liebherrdatasettrain'])
+    # # allpatches(srcpath=srcpath, trgpath=trgpath)
 
-    srcpath = os.path.join(cfg.paths['liebherrtestiframes'])
-    trgpath = os.path.join(cfg.paths['liebherrdatasettest'])
-    allpatches(srcpath=srcpath, trgpath=trgpath)
+    # srcpath = os.path.join(cfg.paths['liebherrtestiframes'])
+    # trgpath = os.path.join(cfg.paths['liebherrdatasettest'])
+    # allpatches(srcpath=srcpath, trgpath=trgpath)
+
+    img = imageio.imread('/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherrdataset/liebherrdatasettest/GantryTravel/img-0-patch-0.tiff')
+    print(img.shape, img.dtype)
+
+
+    # srcpath = os.path.join(cfg.paths['visiontrainiframes'])
+    # trgpath = os.path.join(cfg.paths['visiondatasettrain'])
+    # allpatches(srcpath=srcpath, trgpath=trgpath)
+
+    # srcpath = os.path.join(cfg.paths['visiontestiframes'])
+    # trgpath = os.path.join(cfg.paths['visiondatasettest'])
+    # allpatches(srcpath=srcpath, trgpath=trgpath)
+    
+
+
 
 
 if __name__ == '__main__':

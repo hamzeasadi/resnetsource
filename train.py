@@ -34,7 +34,7 @@ def train(net, train_loader, val_loader, opt, criterion, epochs, minerror, model
     for epoch in range(epochs):
         train_loss = engine.train_step(model=net, data=train_loader, criterion=criterion, optimizer=opt)
         val_loss = engine.val_step(model=net, data=val_loader, criterion=criterion)
-        losses.append(train_loss, val_loss)
+        losses.append((train_loss, val_loss))
 
         if val_loss < minerror:
             minerror = val_loss
