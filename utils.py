@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import time
 from torch import nn as nn
 from torch import optim
-
+import conf as cfg
 
 
 
@@ -28,6 +28,13 @@ class KeepTrack():
     def load_ckp(self, fname):
         state = torch.load(os.path.join(self.path, fname), map_location=dev)
         return state
+
+
+def savearray(data: list, fname:str):
+    path = os.path.join(cfg.paths['model'], fname)
+    with open(path, 'w') as f:
+        for pair in data:
+            f.write(pair+'\n')
 
 
 

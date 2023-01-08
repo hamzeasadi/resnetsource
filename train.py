@@ -1,5 +1,5 @@
 import numpy as np
-from utils import KeepTrack
+from utils import KeepTrack, savearray  
 import conf as cfg
 import datasetup as ds
 import model
@@ -25,6 +25,8 @@ parser.add_argument('--numcls', '-nc', type=int, required=True, metavar='numcls'
 args = parser.parse_args()
 
 
+
+
 def train(net, train_loader, val_loader, opt, criterion, epochs, minerror, modelname:str):
 
     kt = KeepTrack(path=cfg.paths['model'])
@@ -39,7 +41,8 @@ def train(net, train_loader, val_loader, opt, criterion, epochs, minerror, model
             kt.save_ckp(model=net, opt=opt, epoch=epoch, minerror=val_loss, fname=modelname)
             
         print(f"epoch={epoch}, train_loss={train_loss} val_loss={minerror}")
-    
+
+    savearray(data=losses, fname=f'{modelname}.txt')
 
 
 def main():
