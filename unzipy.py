@@ -12,6 +12,6 @@ args = parser.parse_args()
 
 
 
-with zipfile.ZipFile(args.filename, 'r') as zip_ref:
+with zipfile.ZipFile(os.path.join(cfg.paths[args.savepath], args.filename), 'r') as zip_ref:
     zip_ref.extractall(cfg.paths[args.savepath])
 
