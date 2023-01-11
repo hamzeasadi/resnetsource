@@ -100,7 +100,7 @@ ltrainl, lvalidl = createdl(dataset=ltrainvalid, batch_size=128, train_percent=0
 ltestl = DataLoader(ltest, batch_size=128)
 
 datasets = dict(
-    vision=(vtrainl, vvalidl, vtestl), liebherr=(ltrainl. lvalidl, ltestl)
+    vision=(vtrainl, vvalidl, vtestl), liebherr=(ltrainl, lvalidl, ltestl)
 )
 
 def main():
