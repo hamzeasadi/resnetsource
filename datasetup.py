@@ -105,14 +105,16 @@ datasets = dict(
 
 def main():
     datasetpath = 'liebherrcsv'
-    dataset = SoureData(datapath=datasetpath, train=False)
-    ltestl = DataLoader(dataset, batch_size=128)
-    for batch in ltestl:
-        X = batch[0]
-        x = X[0]
-        for i in range(3):
-            cv2.imshow('img', x[i].numpy())
-            cv2.waitKey(0)
+    # dataset = SoureData(datapath=datasetpath, train=False)
+    # ltestl = DataLoader(dataset, batch_size=128)
+    # for batch in ltestl:
+    #     X = batch[0]
+    #     x = X[0]
+    #     for i in range(3):
+    #         cv2.imshow('img', x[i].numpy())
+    #         cv2.waitKey(0)
+
+    print(vtrainl)
 
 
 
