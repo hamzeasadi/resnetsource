@@ -52,8 +52,9 @@ def main():
     Net.to(dev)
     opt = optim.Adam(params=Net.parameters(), lr=3e-4)
     criteria = nn.CrossEntropyLoss()
-    dataset = ds.SoureData(datapath=args.data)
-    train_loader, valid_loader = ds.create_loader(dataset=dataset, batch_size=128, train_percent=0.85)
+    # dataset = ds.SoureData(datapath=args.data)
+    # train_loader, valid_loader = ds.create_loader(dataset=dataset, batch_size=128, train_percent=0.85)
+    train_loader, valid_loader, test_loader = ds.datasets[args.data]
     minerror = np.inf
     # if False:
     if args.train:

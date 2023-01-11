@@ -17,7 +17,7 @@ def train_step(model: nn.Module, data: DataLoader, criterion: nn.Module, optimiz
     for i, (X, Y) in enumerate(data):
         X = X.to(dev)
         Y = Y.to(dev)
-        out, noise, noisecoord = model(X)
+        out, noise = model(X)
         loss = criterion(out, Y)
         optimizer.zero_grad()
         loss.backward()
@@ -35,7 +35,7 @@ def val_step(model: nn.Module, data: DataLoader, criterion: nn.Module):
         for i, (X, Y) in enumerate(data):
             X = X.to(dev)
             Y = Y.to(dev)
-            out, noise, noisecoord = model(X)
+            out, noise = model(X)
             loss = criterion(out, Y)
             epoch_error += loss.item()
             # break
