@@ -125,29 +125,29 @@ def allpatches(srcpath, trgpath, csvpath, H, W, trainpatch=False):
 def main():
     path = '/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherriframes/liebherrtestiframes/GantryTravel/video_16.avi-image-out0.png'
 
-    # liebherr train
-    srcpath = cfg.paths['liebherrtrainiframes']
-    trgpath = cfg.paths['liebherrdatasettrain']
-    csvpath = cfg.paths['liebherrcsv']
-    allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=True)
-
-    # liebherr test
-    srcpath = cfg.paths['liebherrtestiframes']
-    trgpath = cfg.paths['liebherrdatasettest']
-    csvpath = cfg.paths['liebherrcsv']
-    allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=False)
-
-    # # vision train
-    # srcpath = cfg.paths['visiontrainiframes']
-    # trgpath = cfg.paths['visiondatasettrain']
-    # csvpath = cfg.paths['visioncsv']
+    # # liebherr train
+    # srcpath = cfg.paths['liebherrtrainiframes']
+    # trgpath = cfg.paths['liebherrdatasettrain']
+    # csvpath = cfg.paths['liebherrcsv']
     # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=True)
 
-    # # vision test
-    # srcpath = cfg.paths['visiontestiframes']
-    # trgpath = cfg.paths['visiondatasettest']
-    # csvpath = cfg.paths['visioncsv']
+    # # liebherr test
+    # srcpath = cfg.paths['liebherrtestiframes']
+    # trgpath = cfg.paths['liebherrdatasettest']
+    # csvpath = cfg.paths['liebherrcsv']
     # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=False)
+
+    # vision train
+    srcpath = cfg.paths['visiontrainiframes']
+    trgpath = cfg.paths['visiondatasettrain']
+    csvpath = cfg.paths['visioncsv']
+    allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=True)
+
+    # vision test
+    srcpath = cfg.paths['visiontestiframes']
+    trgpath = cfg.paths['visiondatasettest']
+    csvpath = cfg.paths['visioncsv']
+    allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=False)
 
 
 
