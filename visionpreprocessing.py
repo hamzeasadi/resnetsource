@@ -60,107 +60,94 @@ def iframe_extraction(videosfolderpath, trgiframefolderpath):
             iframes(videopath=filepath, trgiframespath=trgfilepath)
 
 
-
-
-trf = transforms.Compose(transforms=[transforms.ToTensor(), transforms.Grayscale(), 
-transforms.Normalize(mean=[140/255], std=[200/255])])
-
-def imagepatcheswithcoords(imgpath, H, W):
-    img = cv2.imread(imgpath)
-    tgrayimg = trf(img)
-    grayimg = tgrayimg.squeeze().numpy()
-    # print(grayimg.shape)
-    h, w = grayimg.shape
-
-    channelx = np.ones(shape=(h, w))
-    for i in range(h):
-        channelx[i, :] = i*channelx[i, :]
-    channelx = 2*(channelx/h) - 1
-
-    channely = np.ones(shape=(h, w))
-    for i in range(w):
-        channely[:, i] = i*channely[:, i]
-    channely = 2*(channely/w) - 1
+def addtocsv(csvpath, fileid):
+    with open(csvpath, 'a') as f:
+        f.write(f"{fileid}\n")
     
-    img = torch.randn(size=(h, w, 3)).numpy()
-    img[:, :, 0] = grayimg
-    img[:, :, 1] = channelx
-    img[:, :, 2] = channely
 
-    # for i in range(3):
-    #     cv2.imshow('gray', img[:, :, i])
-    #     cv2.waitKey(0)
+def imagepath(imgpath, H, W, trainpatc=False):
+    img = cv2.imread(imgpath)
+    h,w,c = img.shape
 
-    # train
-    # numh = 2*int(h/H) - 1
-    # numw = 2*int(w/W) - 1
-    # dh = int(H/2)
-    # dw = int(W/2)
+    if trainpatc:
+        numh = 2*int(h/H) -1
+        numw = 2*int(w/W) - 1
+        dh, dw = int(H/2), int(W/2)
 
-    # test
-    numh = int(h/H)
-    numw = int(w/W)
-    dh = H
-    dw = W
+    else:
+        numh = int(h/H)
+        numw = int(w/W) 
+        dh, dw = H, W
 
-    crops = []
+    patches = []
     for i in range(numh):
         hi = i*dh
         for j in range(numw):
-            wj = j*dw
-            crop = img[hi:hi+H, wj:wj+W, :]
-            crops.append(crop)
+            wi = j*dw
+            patch = img[hi:hi+H, wi:wi+W, :]
+            patches.append((patch, h, w, hi, wi))
 
-    return crops
+    return patches
 
 
 
-def allpatches(srcpath, trgpath):
-    srciframesfolders = os.listdir(srcpath)
-    srciframesfolders = ds_remove(srciframesfolders)
-    for iframefolder in srciframesfolders:
-        iframes = os.listdir(os.path.join(srcpath, iframefolder))
-        iframes = ds_remove(iframes)
+def allpatches(srcpath, trgpath, csvpath, H, W, trainpatch=False):
+    srcfolders = os.listdir(srcpath)
+    srcfolders = ds_remove(srcfolders)
+    for i, srcfolder in enumerate(srcfolders):
+        srcfolderpath = os.path.join(srcpath, srcfolder)
+        srcfolderfiles = os.listdir(srcfolderpath)
+        srcfolderfiles = ds_remove(srcfolderfiles)
+        trgfolderpath = os.path.join(trgpath, srcfolder)
+        cfg.creatdir(path=trgfolderpath)
 
-        patchpath = os.path.join(trgpath, iframefolder)
-        cfg.creatdir(patchpath)
+        for j, srcfile in enumerate(srcfolderfiles):
+            srcfilepath = os.path.join(srcfolderpath, srcfile)
+            patches = imagepath(imgpath=srcfilepath, H=H, W=W, trainpatc=trainpatch)
+            for k, patch in enumerate(patches):
+                filename = f'folder_{i}_img-{j}_patch_{k}.png'
+                filepath = os.path.join(trgfolderpath, filename)
+                cv2.imwrite(filename=filepath, img=patch[0])
 
-        for j, iframe in enumerate(iframes):
-            iframepath = os.path.join(srcpath, iframefolder, iframe)
-            patches = imagepatcheswithcoords(imgpath=iframepath, H=224, W=224)
-            
-            for i, patch in enumerate(patches):
-                patchname = os.path.join(patchpath, f"img-{j}-patch-{i}.tiff")
-                imageio.imsave(patchname, patch)
+                if trainpatch:
+                    csvfile = os.path.join(csvpath, 'train.csv')
+                else:
+                    csvfile = os.path.join(csvpath, 'test.csv') 
 
-                break
-            break
+                fileid = (filepath, *patch[1:], i)
+                addtocsv(csvpath=csvfile, fileid=fileid)
+            # break
+        # break
+
 
 
 
 def main():
-    path = os.path.join('hello', 'world')
+    path = '/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherriframes/liebherrtestiframes/GantryTravel/video_16.avi-image-out0.png'
 
-    # # srcpath = os.path.join(cfg.paths['liebherrtrainiframes'])
-    # # trgpath = os.path.join(cfg.paths['liebherrdatasettrain'])
-    # # allpatches(srcpath=srcpath, trgpath=trgpath)
+    # # liebherr train
+    # srcpath = cfg.paths['liebherrtrainiframes']
+    # trgpath = cfg.paths['liebherrdatasettrain']
+    # csvpath = cfg.paths['liebherrcsv']
+    # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=True)
 
-    # srcpath = os.path.join(cfg.paths['liebherrtestiframes'])
-    # trgpath = os.path.join(cfg.paths['liebherrdatasettest'])
-    # allpatches(srcpath=srcpath, trgpath=trgpath)
+    # # liebherr test
+    # srcpath = cfg.paths['liebherrtestiframes']
+    # trgpath = cfg.paths['liebherrdatasettest']
+    # csvpath = cfg.paths['liebherrcsv']
+    # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=False)
 
-    img = imageio.imread('/Users/hamzeasadi/python/resnetsource/data/liebherr/liebherrdataset/liebherrdatasettest/GantryTravel/img-0-patch-0.tiff')
-    print(img.shape, img.dtype)
+    # # vision train
+    # srcpath = cfg.paths['visiontrainiframes']
+    # trgpath = cfg.paths['visiondatasettrain']
+    # csvpath = cfg.paths['visioncsv']
+    # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=True)
 
-
-    # srcpath = os.path.join(cfg.paths['visiontrainiframes'])
-    # trgpath = os.path.join(cfg.paths['visiondatasettrain'])
-    # allpatches(srcpath=srcpath, trgpath=trgpath)
-
-    # srcpath = os.path.join(cfg.paths['visiontestiframes'])
-    # trgpath = os.path.join(cfg.paths['visiondatasettest'])
-    # allpatches(srcpath=srcpath, trgpath=trgpath)
-    
+    # # vision test
+    # srcpath = cfg.paths['visiontestiframes']
+    # trgpath = cfg.paths['visiondatasettest']
+    # csvpath = cfg.paths['visioncsv']
+    # allpatches(srcpath=srcpath, trgpath=trgpath, csvpath=csvpath, H=224, W=224, trainpatch=False)
 
 
 

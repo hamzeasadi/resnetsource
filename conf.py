@@ -29,6 +29,10 @@ paths = dict(
     liebherriframes=os.path.join(datapath, 'liebherr', 'liebherriframes'), 
         liebherrtrainiframes=os.path.join(datapath, 'liebherr', 'liebherriframes', 'liebherrtrainiframes'),
         liebherrtestiframes=os.path.join(datapath, 'liebherr', 'liebherriframes', 'liebherrtestiframes'),
+
+    # liebhertraincsv = os.path.join(datapath, 'liebherr', 'liebherrdataset', 'train.csv'),
+    # liebhertrestcsv = os.path.join(datapath, 'liebherr', 'liebherrdataset', 'test.csv'),
+    liebherrcsv = os.path.join(datapath, 'liebherr', 'liebherrdataset'),
     
     vision=os.path.join(datapath, 'vision'),
     visionvideos=os.path.join(datapath, 'vision', 'visionvideos'), 
@@ -41,6 +45,10 @@ paths = dict(
     visioniframes=os.path.join(datapath, 'vision', 'visioniframes'), 
         visiontrainiframes=os.path.join(datapath, 'vision', 'visioniframes', 'visiontrainiframes'),
         visiontestiframes=os.path.join(datapath, 'vision', 'visioniframes', 'visiontestiframes'),
+
+    # visiontraincsv=os.path.join(datapath, 'vision', 'visiondataset', 'train.csv'),
+    # visiontestcsv=os.path.join(datapath, 'vision', 'visiondataset', 'test.csv')
+    visioncsv=os.path.join(datapath, 'vision', 'visiondataset'),
 
 
 
