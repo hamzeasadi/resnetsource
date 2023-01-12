@@ -2,7 +2,7 @@ import numpy as np
 from utils import KeepTrack, savearray  
 import conf as cfg
 import datasetup as ds
-import model
+import model2
 import engine
 import argparse
 import torch
@@ -48,7 +48,7 @@ def train(net, train_loader, val_loader, opt, criterion, epochs, minerror, model
 def main():
     model_name = f"{args.modelname}.pt"
     keeptrack = KeepTrack(path=cfg.paths['model'])
-    Net = model.ConstConv(num_cls=args.numcls)
+    Net = model2.ConstConv(num_cls=args.numcls)
     Net.to(dev)
     opt = optim.Adam(params=Net.parameters(), lr=3e-4)
     criteria = nn.CrossEntropyLoss()
